@@ -1,0 +1,137 @@
+{
+    "name": "OpinionMiningPipeline",
+    "properties": {
+        "activities": [
+            {
+                "name": "GetUnprocessedReviews",
+                "type": "Lookup",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "AzureSqlSource",
+                        "sqlReaderQuery": "SELECT TOP 5 ReviewID, review_text \nFROM dbo.preprocessed_airline_reviews4 \nWHERE positive_aspects IS NULL \n  AND negative_aspects IS NULL \n  AND is_mixed_review IS NULL",
+                        "queryTimeout": "02:00:00",
+                        "partitionOption": "None"
+                    },
+                    "dataset": {
+                        "referenceName": "AzureSqlTable1",
+                        "type": "DatasetReference"
+                    },
+                    "firstRowOnly": false
+                }
+            },
+            {
+                "name": "ProcessReviewsBatch",
+                "type": "ForEach",
+                "dependsOn": [
+                    {
+                        "activity": "GetUnprocessedReviews",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "userProperties": [],
+                "typeProperties": {
+                    "items": {
+                        "value": "@activity('GetUnprocessedReviews').output.value",
+                        "type": "Expression"
+                    },
+                    "isSequential": true,
+                    "activities": [
+                        {
+                            "name": "CallTextAnalytics",
+                            "description": "Calls Azure Text Analytics for opinion mining",
+                            "type": "WebActivity",
+                            "dependsOn": [],
+                            "policy": {
+                                "timeout": "0.12:00:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false,
+                                "secureInput": false
+                            },
+                            "userProperties": [],
+                            "typeProperties": {
+                                "method": "POST",
+                                "headers": {
+                                    "Ocp-Apim-Subscription-Key": "Your key goes here",
+                                    "Content-Type": "application/json"
+                                },
+                                "httpRequestTimeout": "00:01:00",
+                                "url": "Your congnitive services url goes here",
+                                "body": {
+                                    "documents": [
+                                        {
+                                            "id": "@{item().ReviewID}",
+                                            "text": "@{item().review_text}"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "name": "Stored procedure1",
+                            "type": "SqlServerStoredProcedure",
+                            "dependsOn": [
+                                {
+                                    "activity": "CallTextAnalytics",
+                                    "dependencyConditions": [
+                                        "Succeeded"
+                                    ]
+                                }
+                            ],
+                            "policy": {
+                                "timeout": "0.12:00:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false,
+                                "secureInput": false
+                            },
+                            "userProperties": [],
+                            "typeProperties": {
+                                "storedProcedureName": "[dbo].[UpdateReviewAspects]",
+                                "storedProcedureParameters": {
+                                    "ReviewID": {
+                                        "value": {
+                                            "value": "@item().ReviewID",
+                                            "type": "Expression"
+                                        },
+                                        "type": "Guid"
+                                    },
+                                    "PositiveAspects": {
+                                        "value": "Test positive aspects",
+                                        "type": "String"
+                                    },
+                                    "NegativeAspects": {
+                                        "value": "Test negative aspects",
+                                        "type": "String"
+                                    },
+                                    "IsMixedReview": {
+                                        "value": "true",
+                                        "type": "Boolean"
+                                    }
+                                }
+                            },
+                            "linkedServiceName": {
+                                "referenceName": "AzureSqlDatabase1",
+                                "type": "LinkedServiceReference"
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2025-09-07T21:31:15Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}
