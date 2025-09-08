@@ -1,0 +1,60 @@
+# Azure Data Factory
+*.publishsettings
+*.azurePubxml
+.vscode/
+
+# Database files
+*.mdf
+*.ldf
+*.bak
+
+# Configuration files with secrets
+config.json
+secrets.json
+appsettings.json
+local.settings.json
+
+# API Keys and Connection Strings
+*.key
+connection-strings.txt
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# Node modules
+node_modules/
+npm-debug.log*
+
+# Excel and CSV temp files
+~$*.xlsx
+~$*.csv
