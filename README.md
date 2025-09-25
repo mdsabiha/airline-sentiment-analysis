@@ -47,6 +47,11 @@ CREATE TABLE preprocessed_airline_reviews4 (
     NaturalKeyHash NVARCHAR(200)
 );
 ```
+The dataset (airline_reviews.csv) was loaded into Azure SQL via Blob Storage bulk insert using BULK INSERT.
+
+This is the preferred method for large datasets (2,210 rows).
+
+Alternative methods (ADF Copy Activity, Jupyter Notebook row inserts) are for testing/demo only.
 
 ## Key Features
 
