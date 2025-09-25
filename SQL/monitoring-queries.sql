@@ -1,11 +1,11 @@
 /*
     Monitoring Queries for Airline Sentiment Analysis Project
     ---------------------------------------------------------
-    These queries help track pipeline progress and validate
-    sentiment analysis updates in the SQL database.
+    Use these queries to track ADF pipeline progress,
+    validate sentiment updates, and check review status.
 */
 
-/* 1. Overall Processing Progress */
+-- 1. Overall Processing Progress
 SELECT 
     COUNT(*) AS TotalReviews,
     SUM(CASE WHEN positive_aspects IS NOT NULL THEN 1 ELSE 0 END) AS ProcessedReviews,
@@ -14,7 +14,7 @@ SELECT
 FROM preprocessed_airline_reviews4;
 
 
-/* 2. Identify Unprocessed Records */
+-- 2. Identify Unprocessed Records
 SELECT TOP 20 
     ReviewID,
     AirlineName,
@@ -27,7 +27,7 @@ WHERE positive_aspects IS NULL
 ORDER BY ReviewID;
 
 
-/* 3. Track First & Last Processed Review IDs */
+-- 3. First & Last Processed IDs
 SELECT 
     MIN(ReviewID) AS FirstProcessedID,
     MAX(ReviewID) AS LastProcessedID,
@@ -36,7 +36,7 @@ FROM preprocessed_airline_reviews4
 WHERE positive_aspects IS NOT NULL;
 
 
-/* 4. Recently Processed Reviews */
+-- 4. Recently Processed Reviews
 SELECT TOP 10 
     ReviewID,
     AirlineName,
