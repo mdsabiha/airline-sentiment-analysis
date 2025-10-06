@@ -265,6 +265,7 @@ Here’s an example of processed rows:
 
 ```
 airline-sentiment-analysis/
+│
 ├── README.md
 ├── LICENSE
 ├── .gitignore
@@ -274,24 +275,27 @@ airline-sentiment-analysis/
 │   └── trigger-configuration.json
 │
 ├── sql/
-│   ├── database-schema.sql
+│   ├── raw_schema.sql
+│   ├── processed_schema.sql
+│   ├── sentiment_summary.sql
 │   ├── monitoring-queries.sql
-│   └── sample-data.sql
+│   └── data-validation.sql
+│
+├── results/
+│   └── airline_reviews_processed_full.csv
+│
+├── reports/
+│   └── Airline_Reviews_Data_Report.docx
+│
+├── images/
+│   ├── adf_pipeline.png
+│   ├── adf_runs.png
+│   └── sql_results.png
 │
 ├── documentation/
-│   ├── setup-guide.md
-│   ├── troubleshooting.md
-│   └── api-reference.md
-│
-├── examples/
-│   ├── sample-output.json
-│   └── test-data.csv
-│
-└── images/
-    ├── adf_pipeline.png
-    ├── sql_results.png
-    ├── sentiment_output.png
-    └── dashboard_preview.png
+    ├── setup-guide.md
+    ├── troubleshooting.md
+    └── api-reference.md
 
 ```
 
