@@ -268,20 +268,31 @@ airline-sentiment-analysis/
 ├── README.md
 ├── LICENSE
 ├── .gitignore
+│
 ├── pipeline/
 │   ├── OpinionMiningPipeline.json
 │   └── trigger-configuration.json
+│
 ├── sql/
 │   ├── database-schema.sql
 │   ├── monitoring-queries.sql
 │   └── sample-data.sql
+│
 ├── documentation/
 │   ├── setup-guide.md
 │   ├── troubleshooting.md
 │   └── api-reference.md
-└── examples/
-    ├── sample-output.json
-    └── test-data.csv
+│
+├── examples/
+│   ├── sample-output.json
+│   └── test-data.csv
+│
+└── images/
+    ├── adf_pipeline.png
+    ├── sql_results.png
+    ├── sentiment_output.png
+    └── dashboard_preview.png
+
 ```
 
 ---
